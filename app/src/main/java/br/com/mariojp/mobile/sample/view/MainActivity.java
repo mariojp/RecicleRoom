@@ -1,6 +1,8 @@
 package br.com.mariojp.mobile.sample.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,42 +20,33 @@ import br.com.mariojp.mobile.sample.repositorio.BancoDados;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Contato> dados = new ArrayList<>();
-    CustomAdapter customAdapter;
-    static BancoDados bd;
+    private ContatoViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bd = BancoDados.getInstance(this);
-        dados = bd.getContatoDao().obterTodos();
-        if (dados.size() == 0) {
-            geraContatos();
-            dados = bd.getContatoDao().obterTodos();
-        }
+
         RecyclerView recyclerView = findViewById(R.id.main_lista_nomes);
-         customAdapter = new CustomAdapter(dados);
+        CustomAdapter customAdapter = new CustomAdapter(new CustomAdapter.ContatoDiff());
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+        viewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication()))
+                .get(ContatoViewModel.class);
+
+        viewModel.getContatos().observe(this, contatos -> {
+            customAdapter.submitList(contatos);
+        });
+
     }
 
-
-    private void geraContatos(){
-        for(int i = 0 ; i < 20; i++){
-            Contato c = new Contato();
-            c.setNome( "Nome "+ i );
-            dados.add(c);
-        }
-        bd.getContatoDao().insere(dados.toArray(new Contato[dados.size()]));
-    }
 
 
     public void adicionar(View v){
         Contato c = new Contato();
         c.setNome( "Nome X" );
-        bd.getContatoDao().insere(c);
-        dados.add(c);
-        customAdapter.notifyDataSetChanged();
+        viewModel.inserir(c);
     }
 }

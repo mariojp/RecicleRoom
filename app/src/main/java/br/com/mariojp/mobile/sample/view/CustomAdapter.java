@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -13,12 +15,11 @@ import java.util.List;
 import br.com.mariojp.mobile.sample.R;
 import br.com.mariojp.mobile.sample.model.Contato;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
+public class CustomAdapter extends ListAdapter<Contato,CustomAdapter.CustomViewHolder> {
 
-    private List<Contato> lista;
 
-    public CustomAdapter(List<Contato> lista) {
-        this.lista = lista;
+    public CustomAdapter(@NonNull DiffUtil.ItemCallback<Contato> diff) {
+        super(diff);
     }
 
     @NonNull
@@ -31,12 +32,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        holder.getTextView().setText(lista.get(position).getNome());
-    }
-
-    @Override
-    public int getItemCount() {
-        return lista.size();
+        holder.getTextView().setText(getItem(position).getNome());
     }
 
 
@@ -53,4 +49,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             return textView;
         }
     }
+
+    static class ContatoDiff extends DiffUtil.ItemCallback<Contato> {
+
+        @Override
+        public boolean areItemsTheSame(@NonNull Contato oldItem, @NonNull Contato newItem) {
+            return oldItem == newItem;
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Contato oldItem, @NonNull Contato newItem) {
+            return (oldItem.getUid() == newItem.getUid()) && oldItem.getNome().equals(newItem.getNome());
+        }
+    }
+
 }
