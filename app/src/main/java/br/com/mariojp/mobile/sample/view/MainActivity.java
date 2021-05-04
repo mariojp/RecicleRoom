@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.main_lista_nomes);
         CustomAdapter customAdapter = new CustomAdapter(new CustomAdapter.ContatoDiff());
         recyclerView.setAdapter(customAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication()))
@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void adicionar(View v){
-        Contato c = new Contato();
-        c.setNome( "Nome X" );
-        viewModel.inserir(c);
-    }
+//    public void adicionar(View v){
+//        Contato c = new Contato();
+//        c.setNome( "Nome X" );
+//        viewModel.inserir(c);
+//    }
 }
