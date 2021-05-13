@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -30,6 +31,15 @@ android {
 
 dependencies {
 
+    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-ui:2.3.5'
+
+    // Feature module Support
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.5"
+
+
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def room_version = "2.2.6"
 
     implementation "androidx.room:room-runtime:2.2.6"

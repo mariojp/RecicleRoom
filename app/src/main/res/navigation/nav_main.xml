@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/blankFragment">
+
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="br.com.mariojp.mobile.sample.view.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" >
+        <action
+            android:id="@+id/action_blankFragment_to_formFragment"
+            app:destination="@id/formFragment"
+            app:enterAnim="@anim/fragment_fade_enter" >
+            <argument
+                android:name="arg1"
+                android:defaultValue="ola" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/formFragment"
+        android:name="br.com.mariojp.mobile.sample.view.FormFragment"
+        android:label="fragment_form"
+        tools:layout="@layout/fragment_form" >
+        <argument
+            android:name="arg1"
+            app:argType="string"
+            android:defaultValue="OI" />
+    </fragment>
+</navigation>
